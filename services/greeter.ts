@@ -1,0 +1,1 @@
+export const hello = async (name: string = 'world') => `hello ${name}!`

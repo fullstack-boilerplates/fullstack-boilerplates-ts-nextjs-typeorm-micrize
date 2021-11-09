@@ -1,0 +1,21 @@
+services:
+  greeter:
+    build: .
+    environment: 
+      - SERVICE_NAME=greeter
+      - NATS=nats://nats
+    depends_on:
+      - nats
+
+  server:
+    build: .
+    environment: 
+      - NATS=nats://nats
+    ports: 
+      - "3000:3000"
+    command: npm run start:nextjs
+    depends_on:
+      - nats
+
+  nats:
+    image: nats

@@ -1,0 +1,36 @@
+{
+  "name": "ts-nextjs-micrize",
+  "version": "1.0.0",
+  "description": "fullstack microservice bolierplate with next.js | 基于 next.js 的微服务全栈模板",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cross-env DEV_MODE=true next dev",
+    "build:micrize": "tsc --excludeDirectories pages --outDir .micrize --noEmit false --module commonjs",
+    "build": "next build && npm run build:micrize",
+    "start:micrize": "node ./.micrize/services/index.js",
+    "start:nextjs": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fullstack-boilerplates/ts-nextjs-micrize.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fullstack-boilerplates/ts-nextjs-micrize/issues"
+  },
+  "homepage": "https://github.com/fullstack-boilerplates/ts-nextjs-micrize#readme",
+  "dependencies": {
+    "micrize": "^1.0.0",
+    "next": "^12.0.3",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.34",
+    "cross-env": "^7.0.3",
+    "typescript": "^4.4.4"
+  }
+}
