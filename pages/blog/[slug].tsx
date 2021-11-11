@@ -1,17 +1,21 @@
 import { services } from "../../services"
 
-const Blog = ({ slug, welcome }) => {
-  return <div>blog#{slug} |{welcome}</div>
+const Blog = ({ slug, blog }) => {
+  if (!blog) return <div>blog#${slug} not found!</div>
+  return <div>
+    <h1>blog#{blog.id} </h1>
+    <p>{blog.title}</p>
+  </div>
 }
 
 export default Blog
 
 
 export async function getServerSideProps({ query = {} }) {
-  let { slug = '?' } = query as any
+  let { slug = '1' } = query as any
   return {
     props: {
-      welcome: await (await services.greeter()).hello(`blog#${slug}`),
+      blog: await services.blog.getById(slug),
       slug
     },
   }

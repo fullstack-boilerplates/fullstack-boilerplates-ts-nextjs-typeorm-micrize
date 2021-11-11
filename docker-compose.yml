@@ -7,7 +7,31 @@ services:
     depends_on:
       - nats
 
-  server:
+  blog:
+    build: .
+    environment: 
+      - SERVICE_NAME=blog
+      - NATS=nats://nats
+      - MYSQL=mysql://root:mysql@db/app
+    depends_on:
+      nats:
+        condition: service_started
+      db:
+        condition: service_healthy
+  
+  db:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_DATABASE=app
+    volumes:
+      - db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 10
+
+  nextjs:
     build: .
     environment: 
       - NATS=nats://nats
@@ -16,6 +40,13 @@ services:
     command: npm run start:nextjs
     depends_on:
       - nats
+      - blog
+      - greeter
+
 
   nats:
     image: nats
+
+
+volumes:
+  db-data:

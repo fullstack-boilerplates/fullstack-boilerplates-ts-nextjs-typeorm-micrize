@@ -5,8 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cross-env DEV_MODE=true next dev",
-    "build:micrize": "tsc --excludeDirectories pages --outDir .micrize --noEmit false --module commonjs",
+    "dev": "concurrently npm:dev:*",
+    "dev:nextjs": "next dev",
+    "dev:tsc": "tsc --project tsconfig.micrize.json --watch",
+    "dev:greeter": "cross-env SERVICE_NAME=greeter nodemon ./.micrize/services/index.js",
+    "dev:blog": "cross-env SERVICE_NAME=blog nodemon ./.micrize/services/index.js",
+    "build:micrize": "tsc --project tsconfig.micrize.json",
     "build": "next build && npm run build:micrize",
     "start:micrize": "node ./.micrize/services/index.js",
     "start:nextjs": "next start"
@@ -23,14 +27,32 @@
   },
   "homepage": "https://github.com/fullstack-boilerplates/ts-nextjs-micrize#readme",
   "dependencies": {
-    "micrize": "^1.0.0",
+    "micrize": "^1.1.1",
+    "mysql2": "^2.3.3-rc.0",
     "next": "^12.0.3",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "reflect-metadata": "^0.1.13",
+    "sqlite3": "^5.0.2",
+    "typeorm": "^0.2.38"
   },
   "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/plugin-proposal-decorators": "^7.16.0",
     "@types/react": "^17.0.34",
+    "concurrently": "^6.3.0",
     "cross-env": "^7.0.3",
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.4.0",
     "typescript": "^4.4.4"
+  },
+  "nodemonConfig": {
+    "watch": [
+      ".micrize/"
+    ],
+    "ignore": [
+      "pages",
+      "services"
+    ]
   }
 }
